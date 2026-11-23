@@ -1,0 +1,276 @@
+Perfeito! Aqui está o **código completo e final** — com as abas funcionando, progresso, salvamento automático e todas as matérias do PMBA. ✅
+
+---
+
+## 📖 Código Completo — Caderno PMBA
+
+Copie **tudo** abaixo, salve como **`index.html`** e substitua no Netlify arrastando o arquivo novo:
+
+```
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎖️ Caderno de Estudos — PMBA</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        :root {
+            --primaria: #1e40af;
+            --sucesso: #16a34a;
+            --fundo: #f8fafc;
+            --cartao: #ffffff;
+            --texto: #1e293b;
+            --borda: #e2e8f0;
+        }
+        body { background: var(--fundo); color: var(--texto); min-height: 100vh; padding-bottom: 3rem; }
+        header {
+            background: linear-gradient(135deg, var(--primaria), #1d4ed8);
+            color: white; padding: 1.5rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+        header h1 { font-size: 1.4rem; margin-bottom: .2rem; }
+        header p { opacity: .9; font-size: .9rem; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 1rem; }
+
+        /* === PROGRESSO GERAL === */
+        .progresso-geral {
+            background: var(--cartao); border-radius: 10px; padding: 1.2rem; margin-bottom: 1.2rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,.05);
+        }
+        .progresso-geral h2 { font-size: .95rem; color: var(--primaria); margin-bottom: .5rem; }
+        .barra-fundo { height: 22px; background: #e2e8f0; border-radius: 11px; overflow: hidden; }
+        .barra-topo {
+            height: 100%; background: linear-gradient(90deg, var(--sucesso), #22c55e);
+            width: 0%; border-radius: 11px; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 600; font-size: .75rem; transition: width .4s ease;
+        }
+
+        /* === ABAS === */
+        .navegacao { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+        .aba {
+            padding: .6rem .9rem; background: var(--cartao); border: none; border-radius: 8px;
+            cursor: pointer; font-size: .85rem; color: var(--texto); transition: all .2s;
+        }
+        .aba:hover { background: #e2e8f0; }
+        .aba.ativa { background: var(--primaria); color: white; font-weight: 500; }
+
+        /* === CONTEÚDO === */
+        .pagina { display: none; animation: aparece .3s ease; }
+        .pagina.visivel { display: block; }
+        @keyframes aparece { from {opacity:0;transform:translateY(8px)} to {opacity:1;transform:translateY(0)} }
+
+        .cartao {
+            background: var(--cartao); border-radius: 10px; padding: 1.3rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,.05); margin-bottom: 1rem;
+        }
+        .cabecalho {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+            gap: .6rem; margin-bottom: 1rem;
+        }
+        .cabecalho h3 { font-size: 1.05rem; color: var(--primaria); }
+        .mini-progresso { display: flex; align-items: center; gap: .5rem; }
+        .mini-barra { width: 80px; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+        .mini-barra > div { height: 100%; background: var(--sucesso); width: 0; border-radius: 4px; transition: width .3s; }
+        .mini-texto { font-size: .75rem; color: #64748b; min-width: 35px; text-align: right; }
+
+        /* === LISTA DE TÓPICOS === */
+        .topicos { margin-top: .8rem; }
+        .item {
+            display: flex; align-items: center; padding: .6rem; background: #f1f5f9;
+            border-radius: 6px; margin-bottom: .4rem; transition: .2s;
+        }
+        .item.concluido { background: #dcfce7; opacity: .85; }
+        .item.concluido span { text-decoration: line-through; }
+        .item input { width: 17px; height: 17px; margin-right: .7rem; cursor: pointer; }
+        .item span { flex: 1; font-size: .9rem; }
+
+        /* === ANOTAÇÕES === */
+        textarea {
+            width: 100%; min-height: 140px; padding: .8rem; border: 2px solid var(--borda);
+            border-radius: 6px; font-size: .9rem; line-height: 1.5; resize: vertical;
+            margin: .8rem 0;
+        }
+        textarea:focus { outline: none; border-color: var(--primaria); }
+
+        /* === BOTÕES === */
+        .botoes { display: flex; gap: .5rem; flex-wrap: wrap; margin: .6rem 0; }
+        button {
+            padding: .55rem .9rem; border: none; border-radius: 6px; font-size: .85rem;
+            cursor: pointer; transition: .2s; font-weight: 500;
+        }
+        .btn-salvar { background: var(--sucesso); color: white; }
+        .btn-salvar:hover { background: #15803d; }
+        .btn-limpar { background: #e2e8f0; color: var(--texto); }
+        .btn-limpar:hover { background: #cbd5e1; }
+
+        /* === AJUDA === */
+        .ajuda {
+            background: #eff6ff; border-left: 4px solid var(--primaria);
+            padding: .9rem; border-radius: 6px; margin-top: 1rem;
+        }
+        .ajuda h4 { color: var(--primaria); margin-bottom: .3rem; font-size: .9rem; }
+        .ajuda p { font-size: .85rem; line-height: 1.5; }
+
+        /* === NOTIFICAÇÃO === */
+        .aviso {
+            position: fixed; top: 15px; right: 15px; background: var(--sucesso); color: white;
+            padding: .8rem 1.2rem; border-radius: 6px; opacity: 0; transform: translateY(-8px);
+            transition: .3s; z-index: 999; font-size: .85rem;
+        }
+        .aviso.mostrar { opacity: 1; transform: translateY(0); }
+
+        footer { text-align: center; padding: 1.2rem; color: #94a3b8; font-size: .8rem; margin-top: 1rem; }
+
+        @media(max-width:768px){ .aba { padding: .5rem .7rem; font-size: .8rem; } .container { padding: .7rem; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎖️ Caderno de Estudos — PMBA</h1>
+    <p>Concurso Soldado — Polícia Militar da Bahia</p>
+</header>
+
+<div class="container">
+    <!-- AVISO -->
+    <div class="aviso" id="aviso">✅ Salvo com sucesso!</div>
+
+    <!-- PROGRESSO GERAL -->
+    <div class="progresso-geral">
+        <h2>📊 Seu Progresso Geral</h2>
+        <div class="barra-fundo"><div class="barra-topo" id="barraGeral">0%</div></div>
+    </div>
+
+    <!-- ABAS DAS MATÉRIAS -->
+    <div class="navegacao">
+        <button class="aba ativa" data-alvo="portugues">📝 Português</button>
+        <button class="aba" data-alvo="matematica">🔢 Matemática</button>
+        <button class="aba" data-alvo="historia">📜 História</button>
+        <button class="aba" data-alvo="geografia">🌎 Geografia</button>
+        <button class="aba" data-alvo="direito">⚖️ Direito</button>
+        <button class="aba" data-alvo="atualidades">📰 Atualidades</button>
+        <button class="aba" data-alvo="informatica">💻 Informática</button>
+        <button class="aba" data-alvo="redacao">✍️ Redação</button>
+    </div>
+
+    <!-- ================================================== PORTUGUÊS -->
+    <div id="portugues" class="pagina visivel">
+        <div class="cartao">
+            <div class="cabecalho">
+                <h3>📝 Língua Portuguesa</h3>
+                <div class="mini-progresso">
+                    <div class="mini-barra"><div id="mp-pt"></div></div>
+                    <span class="mini-texto" id="mt-pt">0%</span>
+                </div>
+            </div>
+            <div class="topicos" id="topicos-pt">
+                <p style="font-size:.8rem; color:#64748b; margin-bottom:.5rem;">Marque conforme vai estudando:</p>
+                <label class="item"><input type="checkbox" class="check"><span>Interpretação de texto</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Ortografia e acentuação</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Concordância nominal e verbal</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Regência e crase</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Pontuação</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Classes de palavras</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Análise sintática</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Semântica: sinônimos, antônimos</span></label>
+            </div>
+            <textarea id="txt-pt" placeholder="Suas anotações, regras, dúvidas e exemplos..."></textarea>
+            <div class="botoes">
+                <button class="btn-salvar" onclick="salvar('pt')">💾 Salvar</button>
+                <button class="btn-limpar" onclick="limpar('pt')">🗑️ Limpar</button>
+            </div>
+            <div class="ajuda">
+                <h4>💬 Precisa de ajuda?</h4>
+                <p>Copie sua dúvida ou exercício e cole aqui no nosso chat que eu te explico! 😊</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================== MATEMÁTICA -->
+    <div id="matematica" class="pagina">
+        <div class="cartao">
+            <div class="cabecalho">
+                <h3>🔢 Matemática e Raciocínio Lógico</h3>
+                <div class="mini-progresso">
+                    <div class="mini-barra"><div id="mp-mt"></div></div>
+                    <span class="mini-texto" id="mt-mt">0%</span>
+                </div>
+            </div>
+            <div class="topicos" id="topicos-mt">
+                <label class="item"><input type="checkbox" class="check"><span>Números inteiros, racionais e reais</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Equações de 1º e 2º grau</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Porcentagem e juros</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Regra de três simples e composta</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Geometria básica</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Análise combinatória e probabilidade</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Raciocínio lógico: proposições</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Sequências e problemas</span></label>
+            </div>
+            <textarea id="txt-mt" placeholder="Fórmulas, exemplos, exercícios resolvidos..."></textarea>
+            <div class="botoes">
+                <button class="btn-salvar" onclick="salvar('mt')">💾 Salvar</button>
+                <button class="btn-limpar" onclick="limpar('mt')">🗑️ Limpar</button>
+            </div>
+            <div class="ajuda">
+                <h4>💬 Dúvida em algum cálculo?</h4>
+                <p>Manda a questão no nosso chat que eu mostro o passo a passo!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================== HISTÓRIA -->
+    <div id="historia" class="pagina">
+        <div class="cartao">
+            <div class="cabecalho">
+                <h3>📜 História do Brasil e da Bahia</h3>
+                <div class="mini-progresso">
+                    <div class="mini-barra"><div id="mp-hi"></div></div>
+                    <span class="mini-texto" id="mt-hi">0%</span>
+                </div>
+            </div>
+            <div class="topicos" id="topicos-hi">
+                <label class="item"><input type="checkbox" class="check"><span>Período Colonial — Capitanias Hereditárias</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Invasões estrangeiras e União Ibérica</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Mineração e ciclo do ouro</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Independência do Brasil</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Império — Reinado, Regência</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>República — Velha, Populista, Militar e Atual</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>História da Bahia — povoamento e economia</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Abolição e questões sociais</span></label>
+            </div>
+            <textarea id="txt-hi" placeholder="Datas importantes, personagens, resumos..."></textarea>
+            <div class="botoes">
+                <button class="btn-salvar" onclick="salvar('hi')">💾 Salvar</button>
+                <button class="btn-limpar" onclick="limpar('hi')">🗑️ Limpar</button>
+            </div>
+            <div class="ajuda">
+                <h4>💬 Quer um resumo?</h4>
+                <p>É só pedir no chat: "Me explica a Independência do Brasil" ✨</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================== GEOGRAFIA -->
+    <div id="geografia" class="pagina">
+        <div class="cartao">
+            <div class="cabecalho">
+                <h3>🌎 Geografia do Brasil e da Bahia</h3>
+                <div class="mini-progresso">
+                    <div class="mini-barra"><div id="mp-ge"></div></div>
+                    <span class="mini-texto" id="mt-ge">0%</span>
+                </div>
+            </div>
+            <div class="topicos" id="topicos-ge">
+                <label class="item"><input type="checkbox" class="check"><span>Localização e fusos horários</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Relevo, clima e hidrografia do Brasil</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Biomas brasileiros</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>População e urbanização</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Economia brasileira — setores e regiões</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Geografia da Bahia — relevo, clima e rios</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Regiões e economia baiana</span></label>
+                <label class="item"><input type="checkbox" class="check"><span>Meio ambiente e sustentabilidade</span></label>
+            </div>
+            <textarea id="txt-ge" placeholder="Conceitos, mapas, dados..."></textarea>
+            <div class="botoes">
+                <button class="btn-salvar" onclick="salvar('ge')">💾 Salvar</button>
+```
